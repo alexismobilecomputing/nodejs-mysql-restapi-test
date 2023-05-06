@@ -9,7 +9,7 @@ import cors from 'cors';
 
 const app = express();
 
-app.use(cors());
+app.use(cors()); //Con esto permite que cualquier cliente pueda acceder a este servidor, SI QUISIERA QUE SOLO mi localhost:4200 tubiese acceso, tendria q poner asi => app.use(cors({ origin: 'http://localhost:4200' }))
 
 app.use(express.json()); //->Antes de pasar los datos q mando por ej en un post por las rutas voy a convertirlos en json, sino lee buffer
 
