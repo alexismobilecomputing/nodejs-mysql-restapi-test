@@ -18,6 +18,9 @@ router.patch('/employees/:id', updatePatchEmployee) //Es similar a la peticion p
 
 router.delete('/employees/:id', deleteEmployee)
 
+router.post('/pruebita/:id', deleteEmployee)
+
+
 export default router  //Esto exporta todas las rutas
 
 // IMPORTANTE:
