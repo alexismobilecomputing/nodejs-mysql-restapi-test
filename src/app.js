@@ -5,7 +5,11 @@ import express, { json } from 'express' // ->Esta es la forma mas moderna se los
 import employeesRoutes from './routes/employees.routes.js'
 import indexRoutes from './routes/index.routes.js'
 
+import cors from 'cors';
+
 const app = express();
+
+app.use(cors());
 
 app.use(express.json()); //->Antes de pasar los datos q mando por ej en un post por las rutas voy a convertirlos en json, sino lee buffer
 

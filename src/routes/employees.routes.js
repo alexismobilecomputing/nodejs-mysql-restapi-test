@@ -12,7 +12,7 @@ router.get('/employees/:id', getEmployee)
 
 router.post('/employees', createEmployee)
 
-// router.put('/employees/:id', updateEmployee) //Si vas a actualizar todo 
+router.put('/employees/:id', updateEmployee) //Si vas a actualizar todo 
 
 router.patch('/employees/:id', updatePatchEmployee) //Es similar a la peticion put, con la diferencia de q podriamos querer actualizar parcialmente
 
