@@ -5,6 +5,8 @@ import express, { json } from 'express' // ->Esta es la forma mas moderna se los
 import employeesRoutes from './routes/employees.routes.js'
 import indexRoutes from './routes/index.routes.js'
 
+import authRoutes from './routes/auth.routes.js' //Son las rutas q voy a usar para probar mi base de datos de mongoDB
+
 import cors from 'cors';
 
 const app = express();
@@ -15,6 +17,8 @@ app.use(express.json()); //->Antes de pasar los datos q mando por ej en un post 
 
 app.use(indexRoutes);//A diferencia del employeeRoutes no le quiero agregar ningun pedazo de ruta antes de las rutas q contiene.
 app.use('/api',employeesRoutes); //Traigo todas las rutas, y ademas le digo que al comiendo de todas las rutas va a tener /api -> Ej: http://localhost:3000/api/employees   
+
+app.use(authRoutes);//Son las rutas para probar mi base de datos mongoDB
 
 //Si paso por todas las rutas anteriores y no la encontro, va a entrar aca y le devolvera notfound, sino por defecto nos devuelve un html que dice cannot get y la ruta.
 app.use((req,res)=>{
