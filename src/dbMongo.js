@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 const borrame = 'mongodb+srv://alexisaostri:34812753@cluster0.emqhmdd.mongodb.net/pruebaDB'
 
-// mongoose.connect(process.env.URI_MONGO_DB_PRUEBA, {
+// mongoose.connect(process.env.URI_MONGO_DB_PRUEBA, { 
 mongoose.connect(borrame, {
   useNewUrlParser: true,
   useUnifiedTopology: true
