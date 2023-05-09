@@ -7,9 +7,15 @@ import indexRoutes from './routes/index.routes.js'
 
 import authRoutes from './routes/auth.routes.js' //Son las rutas q voy a usar para probar mi base de datos de mongoDB
 
+import animalsMongoDB from './routes/animalsMongoDB.routes.js'
+
 import cors from 'cors';
 
+import cookieParser from 'cookie-parser';
+
 const app = express();
+
+app.use(cookieParser()) //Para poder usar las cookies, las habilito, que me van a servir para guardar mi token
 
 app.use(cors()); //Con esto permite que cualquier cliente pueda acceder a este servidor, SI QUISIERA QUE SOLO mi localhost:4200 tubiese acceso, tendria q poner asi => app.use(cors({ origin: 'http://localhost:4200' }))
 
@@ -19,6 +25,8 @@ app.use(indexRoutes);//A diferencia del employeeRoutes no le quiero agregar ning
 app.use('/api',employeesRoutes); //Traigo todas las rutas, y ademas le digo que al comiendo de todas las rutas va a tener /api -> Ej: http://localhost:3000/api/employees   
 
 app.use(authRoutes);//Son las rutas para probar mi base de datos mongoDB
+
+app.use(animalsMongoDB);//En estas rutas voy a probar distintos llamados de mongoDB todos hechos por mi
 
 //Si paso por todas las rutas anteriores y no la encontro, va a entrar aca y le devolvera notfound, sino por defecto nos devuelve un html que dice cannot get y la ruta.
 app.use((req,res)=>{

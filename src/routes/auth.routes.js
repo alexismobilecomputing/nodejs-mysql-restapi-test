@@ -1,10 +1,11 @@
 import express from 'express'
-import { login, register } from '../controllers/auth.controller.js';
+import { login, register, infoUser } from '../controllers/auth.controller.js';
 
 import { body } from 'express-validator'
 
 //Esta validacion la hacia en el controlador, por ej en register lo hago, pero ahora decidi crear mi propio middleware y le agrego directamente eso, lo voy a hacer en el LOGIN, es exactamente lo mismo.
 import { validationResultMiMiddleware } from '../middlewares/validationResultExpress.js'
+import { requireToken } from '../middlewares/requireToken.js';
 
 const router = express.Router();
 
@@ -37,5 +38,9 @@ router.post("/login", [
     login);
 
 
+//Esta ruta la uso para probar que envia bien el token y q existe.
+//Primero pasa por el middleware q cree de requireToken, si esta todo ok va al siguiente middleware de infoUser
+//PARA PROBARLA, HAGO UN LOGIN, Y EL TOKEN Q ME DEVUELVA ES EL Q VOY A MANDAR A ESTA URL EN EL APARTADO AUTH Y BEARER
+router.get("/protected",requireToken, infoUser);
 
 export default router;
