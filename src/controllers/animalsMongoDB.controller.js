@@ -26,17 +26,11 @@ export const createAnimal = async (req, res) => {
 }
 
 export const deleteAnimal = async (req, res) => {
-    console.log("Req body", req.body)
+    const idAnimal = req.params.id;
     try {
-        // const { id } = req.body; //El id q me envia el cliente, 
-        // const animal = new Animal({ name, typeAnimal, age });
-        // const animalSave = await animal.save();
-        // console.log("ANIMAL SAVE: ",animalSave)
-        // return res.json(animalSave);
+        const result = await Animal.deleteOne({"_id":idAnimal});
+        return res.json(result);
     } catch (error) {
-        console.log("error")
-        // if(error.code === 11000){
-        //     res.status(400).json({"errorMessage":`El nombre ${error.keyValue.name} ya existe`})
-        // }
+        res.status(400).json({"errorMessage":`No se pudo eliminar el animal`})
     }
 }
