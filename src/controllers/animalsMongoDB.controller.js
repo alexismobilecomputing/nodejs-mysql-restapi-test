@@ -18,7 +18,7 @@ export const createAnimal = async (req, res) => {
         return res.json(animalSave);
     } catch (error) {
         if(error.code === 11000){
-            res.status(400).send(`El nombre ${error.keyValue.name} ya existe`)
+            res.status(400).json({"errorMessage":`El nombre ${error.keyValue.name} ya existe`})
         }
     }
 }
