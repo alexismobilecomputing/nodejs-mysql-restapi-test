@@ -9,15 +9,24 @@ import fs from 'fs';
 // import pkg from 'fs-extra';
 // const { unlink } = pkg;
 
+import { v4 as uuidv4 } from 'uuid'; //Lo uso para generar IDS aleatorios para los nombres de mis fotos
+import path from 'path';
+
 const router = Router();
 
 const storage = multer.diskStorage({ //en esta variable definimos, donde se van a guardar los archivos y con que nombre.
     destination: function (req, file, cb) { //el destino, donde se van a guardar
         cb(null, 'src/public/uploads')
     },
-    filename: function (req, file, cb) { //eSTO ES COMO VAMOS A guardar las imagenes
-        cb(null, file.originalname) //1 param es null, es decir q no le paso ningun error.
-    }                               //2 param, es el nombre como quiero nombrar al archivo en este caso "file.originalname" es el nombre del archivo subido junto con su extension
+    // filename: function (req, file, cb) { //eSTO ES COMO VAMOS A guardar las imagenes
+    //     cb(null, file.originalname) //1 param es null, es decir q no le paso ningun error.
+    // }                               //2 param, es el nombre como quiero nombrar al archivo en este caso "file.originalname" es el nombre del archivo subido junto con su extension
+
+    filename: function (req, file, cb) {
+        cb(null, uuidv4() + path.extname(file.originalname)) //A diferencia de lo q hacia arriba, le voy a concatenar un Id aleatorio al comienzo del nombre del archivo
+                                    //el path.extname(), lo q hace es extraerme la extension del nombre ej: index.html -> me devolveria .html
+    }      
+
 });
 
 const upload = multer({ storage: storage });
