@@ -1,0 +1,1 @@
+NO BORRAR ESTE ARCHIVO, Es para que la carpeta de uploads no quede vacia.
