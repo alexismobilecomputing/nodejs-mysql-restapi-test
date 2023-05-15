@@ -13,6 +13,8 @@ import cors from 'cors';
 
 import cookieParser from 'cookie-parser';
 
+import imagesMongoDB from './routes/imagesMongoDB.routes.js'
+
 const app = express();
 
 app.use(cookieParser()) //Para poder usar las cookies, las habilito, que me van a servir para guardar mi token
@@ -22,14 +24,22 @@ app.use(cors()); //Con esto permite que cualquier cliente pueda acceder a este s
 app.use(express.json()); //->Antes de pasar los datos q mando por ej en un post por las rutas voy a convertirlos en json, sino lee buffer
 
 app.use(indexRoutes);//A diferencia del employeeRoutes no le quiero agregar ningun pedazo de ruta antes de las rutas q contiene.
-app.use('/api',employeesRoutes); //Traigo todas las rutas, y ademas le digo que al comiendo de todas las rutas va a tener /api -> Ej: http://localhost:3000/api/employees   
+app.use('/api', employeesRoutes); //Traigo todas las rutas, y ademas le digo que al comiendo de todas las rutas va a tener /api -> Ej: http://localhost:3000/api/employees   
 
 app.use(authRoutes);//Son las rutas para probar mi base de datos mongoDB
 
 app.use(animalsMongoDB);//En estas rutas voy a probar distintos llamados de mongoDB todos hechos por mi
 
-//Si paso por todas las rutas anteriores y no la encontro, va a entrar aca y le devolvera notfound, sino por defecto nos devuelve un html que dice cannot get y la ruta.
-app.use((req,res)=>{
+app.use(imagesMongoDB);;//Las rutas para probar la subida, carga y eliminacion de imagenes en mongoDB
+
+//Public desde afuera
+// app.use('/public',express.static('./public'));
+//Public desde adentro
+app.use('/public',express.static('src/public'));//Hago que la carpeta public sea estatica. Imagenes, archivos etc que hayan en esta carpeta se pueden acceder directamente
+
+
+// Si paso por todas las rutas anteriores y no la encontro, va a entrar aca y le devolvera notfound, sino por defecto nos devuelve un html que dice cannot get y la ruta.
+app.use((req, res) => {
     res.status(404).json({
         message: 'Endpoint Not found'
     })

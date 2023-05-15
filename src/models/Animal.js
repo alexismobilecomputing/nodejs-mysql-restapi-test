@@ -15,6 +15,10 @@ const animalSchema = new mongoose.Schema({
         type: Number,
         require : true,
         uppercase: true
+    },
+    photo:{
+        type: String,
+        require : true,
     }
 })
 

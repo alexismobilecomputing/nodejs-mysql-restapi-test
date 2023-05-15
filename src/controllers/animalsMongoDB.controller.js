@@ -15,8 +15,8 @@ export const getAllAnimals = async (req, res) => {
 export const createAnimal = async (req, res) => {
     console.log("Req body", req.body)
     try {
-        const { name, typeAnimal, age } = req.body;
-        const animal = new Animal({ name, typeAnimal, age });
+        const { name, typeAnimal, age , photo} = req.body; //El photo es el nombre del archivo .extension
+        const animal = new Animal({ name, typeAnimal, age  ,photo}); 
         const animalSave = await animal.save();
         // console.log("ANIMAL SAVE: ",animalSave)
         return res.json(animalSave);
@@ -39,6 +39,7 @@ export const deleteAnimal = async (req, res) => {
 
 export const updateAnimal = async (req, res) => {
     const body = req.body;
+    console.log("EL CUERPO ES: ",body)
     try {
         const result = await Animal.findByIdAndUpdate(body._id, {
             "name": body.name,
