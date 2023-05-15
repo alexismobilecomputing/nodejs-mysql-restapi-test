@@ -18,14 +18,14 @@ const storage = multer.diskStorage({ //en esta variable definimos, donde se van 
     destination: function (req, file, cb) { //el destino, donde se van a guardar
         cb(null, 'src/public/uploads')
     },
-    filename: function (req, file, cb) { //eSTO ES COMO VAMOS A guardar las imagenes
-        cb(null, file.originalname) //1 param es null, es decir q no le paso ningun error.
-    }                               //2 param, es el nombre como quiero nombrar al archivo en este caso "file.originalname" es el nombre del archivo subido junto con su extension
+    // filename: function (req, file, cb) { //eSTO ES COMO VAMOS A guardar las imagenes
+    //     cb(null, file.originalname) //1 param es null, es decir q no le paso ningun error.
+    // }                               //2 param, es el nombre como quiero nombrar al archivo en este caso "file.originalname" es el nombre del archivo subido junto con su extension
 
-    // filename: function (req, file, cb) {
-    //     cb(null, uuidv4() + path.extname(file.originalname)) //A diferencia de lo q hacia arriba, le voy a concatenar un Id aleatorio al comienzo del nombre del archivo
-    //                                 //el path.extname(), lo q hace es extraerme la extension del nombre ej: index.html -> me devolveria .html
-    // }      
+    filename: function (req, file, cb) {
+        cb(null, uuidv4() + path.extname(file.originalname)) //A diferencia de lo q hacia arriba, le voy a concatenar un Id aleatorio al comienzo del nombre del archivo
+                                    //el path.extname(), lo q hace es extraerme la extension del nombre ej: index.html -> me devolveria .html
+    }      
 
 });
 
@@ -37,7 +37,7 @@ router.get('/upload', async (req, res) => {
     // const images = await Image.find({}, { __v: 0, mimetype:0  }); 
 
     // O puedo decirle los parametros que SI quiero q traiga q son los 4 campos q necesito en el frontend
-    const animales = await Image.find().select('nameanimal ageanimal typeanimal originalname');
+    const animales = await Image.find().select('nameanimal ageanimal typeanimal filename');
     res.json(animales);
 });
 
@@ -51,12 +51,11 @@ router.post('/upload', upload.single('file'), async (req, res) => { //El nombre 
     image.nameanimal = req.body.name;
     image.ageanimal = req.body.age;
     image.typeanimal = req.body.typeAnimal;
-    image.filename = req.file.filename; //EJ: perroo.jpg
+    image.filename = req.file.filename; //Aca tengo guardado en vez de perroo.jpg -> elIdgenerado.jpg, q es el nombre de como esta guardado el archivo ahora.
     image.path = 'src/public/uploads/' + req.file.filename;
-    image.originalname = req.file.originalname;
+    image.originalname = req.file.originalname; //EJ: perroo.jpg
     image.mimetype = req.file.mimetype;
     image.size = req.file.size;
-
     await image.save();//Guardo la imagen en la base de datos
 
     res.json({ "mmesage": 'Archivo cargado con exito' })
