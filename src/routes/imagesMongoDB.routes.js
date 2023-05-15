@@ -19,10 +19,8 @@ const storage = multer.diskStorage({ //en esta variable definimos, donde se van 
         cb(null, file.originalname) //1 param es null, es decir q no le paso ningun error.
     }                               //2 param, es el nombre como quiero nombrar al archivo en este caso "file.originalname" es el nombre del archivo subido junto con su extension
 });
-console.log("storage: ", storage)
 
 const upload = multer({ storage: storage });
-console.log("UPLOAD: ", upload)
 
 //Trae todas las imagenes, pero solo le devuelvo el nombre, edad, tipoAnimal y la extension de la foto
 router.get('/upload', async (req, res) => {
