@@ -82,6 +82,8 @@ export const login = async (req, res) => {
 //Ruta para probar verificar token de usuarios registrados.
 //Este token hay q enviarlo en el Auth y luego con el formato Bearer. (Envio el mismo token q me dan cuando ingreso)
 export const infoUser = async (req,res) =>{
+        
+    //Si llegue aca, es porque la persona valido bien el token y puede acceder a las acciones de esta ruta, en este caso solo devolvemos info del usuario.
     try {
         console.log("req",req.uid)
         const user = await User.findById(req.uid); //Este req.uid es la propiedad q le setie al requerimiento en el middleware de requireToken, el id lo saque de la variable payload.

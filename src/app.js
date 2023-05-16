@@ -15,6 +15,8 @@ import cookieParser from 'cookie-parser';
 
 import imagesMongoDB from './routes/imagesMongoDB.routes.js'
 
+import usuarioLoginMongoDBRoutes from './routes/usuarioLoginMongoDB.routes.js'
+
 const app = express();
 
 app.use(cookieParser()) //Para poder usar las cookies, las habilito, que me van a servir para guardar mi token
@@ -31,6 +33,8 @@ app.use(authRoutes);//Son las rutas para probar mi base de datos mongoDB
 app.use(animalsMongoDB);//En estas rutas voy a probar distintos llamados de mongoDB todos hechos por mi
 
 app.use(imagesMongoDB);;//Las rutas para probar la subida, carga y eliminacion de imagenes en mongoDB
+
+app.use('/auth', usuarioLoginMongoDBRoutes);
 
 //Public desde afuera
 // app.use('/public',express.static('./public'));

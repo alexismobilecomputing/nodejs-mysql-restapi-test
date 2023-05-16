@@ -12,6 +12,8 @@ import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid'; //Lo uso para generar IDS aleatorios para los nombres de mis fotos
 import path from 'path';
 
+import { requireToken } from '../middlewares/requireToken.js';
+
 const router = Router();
 
 const storage = multer.diskStorage({ //en esta variable definimos, donde se van a guardar los archivos y con que nombre.
@@ -41,8 +43,8 @@ router.get('/upload', async (req, res) => {
     res.json(animales);
 });
 
-//Subo una imagen
-router.post('/upload', upload.single('file'), async (req, res) => { //El nombre file es la palabra en donde espera el servidor q le envieemos la imagen desde el front
+//Subo una imagen , Le agregue una validacion q pide token , con el middleware requireToken
+router.post('/upload',requireToken, upload.single('file'), async (req, res) => { //El nombre file es la palabra en donde espera el servidor q le envieemos la imagen desde el front
     // console.log("FILE CON LA INFO:", req.file) //En el file viene la imagen
     // console.log("BODY CON LA INFO:", req.body) //En el body el resto de los campos
 
@@ -61,7 +63,8 @@ router.post('/upload', upload.single('file'), async (req, res) => { //El nombre 
     res.json({ "mmesage": 'Archivo cargado con exito' })
 })
 
-router.delete('/upload/:id', async (req, res) => {
+//Le agregue una validacion q pide token , con el middleware requireToken
+router.delete('/upload/:id',requireToken, async (req, res) => {
     const idAnimal = req.params.id;
     try {
         // const result = await Image.deleteOne({ "_id": idAnimal });
@@ -85,8 +88,8 @@ router.delete('/upload/:id', async (req, res) => {
     }
 });
 
-
-router.put('/upload', async (req, res) => {
+//Le agregue una validacion q pide token , con el middleware requireToken
+router.put('/upload',requireToken, async (req, res) => {
     const body = req.body;
     try {
         const result = await Image.findByIdAndUpdate(body._id, {
