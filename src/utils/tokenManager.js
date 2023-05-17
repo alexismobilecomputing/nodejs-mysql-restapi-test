@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 export const generateToken = (uid) => {
 
-    const expiresIn = 60 * 15 //15 min es lo q nos duraria el token, y hariamos un refresh token despues.
+    const expiresIn = 60 * 2 //2 min es lo q nos duraria el token, y hariamos un refresh token despues.
     //No es necesario usar el expireIn, podria no expirar nunca.
     try {
         //En el primer parametro es el objeto que contiene los datos y que deseamos incluir en el token, en este caso le estamos mandando el id, pero podria ser un json con otros valores tmb como role, nombre usuario, email, imagenes y cualquier otra cosa q queramos.
