@@ -11,6 +11,6 @@ export const generateToken = (uid) => {
 
         return { token, expiresIn }; //AL LLAMARSE IGUAL NO HACE FALTA PONER token: token, lo smimo el expireIn
     } catch (error) {
-        console.log(error)
+        console.log(error) 
     }
 }
