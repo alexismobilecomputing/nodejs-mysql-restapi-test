@@ -64,7 +64,7 @@ export function generateMessageMail(token) {
             <p>Estamos encantados de que quieras ser parte de nuestra veterinaria. Para completar tu registro, por favor haz
                 clic en el siguiente
                 enlace:</p>
-            <p><a href="https://nodejs-mysql-restapi-test-production-af43.up.railway.app/auth/preregistro/${token}" class="link">Confirmar registro</a></p>
+            <p><a href="https://nodejs-mysql-restapi-test-production-af43.up.railway.app/auth/registrousuario/${token}" class="link">Confirmar registro</a></p>
 
             <p>¡Esperamos verte pronto en nuestras instalaciones!</p>
             <p>Saludos,<br>El equipo de Aostri</p>
