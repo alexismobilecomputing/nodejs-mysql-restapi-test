@@ -65,12 +65,12 @@ export const registrousuario = async (req, res) => {
         const usuarioARegistrar = new Usuario({ email: usuarioAConfirmar.email, password: usuarioAConfirmar.password })
 
         const result = await usuarioARegistrar.save();
-        console.log("EL RESULLLTT ES: ",result)
-        if(result)res.redirect('https://primer-app-angular.web.app/confirm-register');
+        
+        res.redirect('https://primer-app-angular.web.app/confirm-register');
+
 
     } catch (error) {
-        console.log("ERROR EN EL TOKEN DE REGISTRO:",error)
-        res.redirect('https://primer-app-angular.web.app/confirm-register')
+        res.redirect('https://primer-app-angular.web.app/error-register')
     }
 
 }
