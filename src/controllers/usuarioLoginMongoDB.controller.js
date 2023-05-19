@@ -33,7 +33,7 @@ export const preregistro = async (req, res) => {
         //No importa si el mail esta cargado en los usuariosAConfirmar, siempre voy a ver si existe en la tabla oficial de usuarios.
 
         //Send mail//
-        const info = await transport.sendMail(generateMessageMail(token,email));
+        const info = await transport.sendMail(generateMessageMail(token, email));
 
 
         ///send mail///
@@ -53,21 +53,26 @@ export const preregistro = async (req, res) => {
 };
 
 export const registrousuario = async (req, res) => {
-    const tokenAConfirmar = req.params.token;
+    try {
+        const tokenAConfirmar = req.params.token;
 
-    //1-Con el token que me vino de la url de confirmacion, lo abro y busco el registro de la tabla de usuarios a confirmar.
-    const payload = jwt.verify(tokenAConfirmar, process.env.JWT_SECRET)
+        //1-Con el token que me vino de la url de confirmacion, lo abro y busco el registro de la tabla de usuarios a confirmar.
+        const payload = jwt.verify(tokenAConfirmar, process.env.JWT_SECRET)
 
-    //2-Con el id busco en la tabla y agarro sus valores para registrar un usuario ahora si en la tabla final de 'Usuario'
-    const usuarioAConfirmar = await UsuarioAConfirmar.findById(payload.uid)
+        //2-Con el id busco en la tabla y agarro sus valores para registrar un usuario ahora si en la tabla final de 'Usuario'
+        const usuarioAConfirmar = await UsuarioAConfirmar.findById(payload.uid)
 
-    const usuarioARegistrar = new Usuario({ email: usuarioAConfirmar.email, password: usuarioAConfirmar.password })
+        const usuarioARegistrar = new Usuario({ email: usuarioAConfirmar.email, password: usuarioAConfirmar.password })
 
-    usuarioARegistrar.save();
+        usuarioARegistrar.save();
 
-    res.redirect('https://primer-app-angular.web.app/confirm-register');
+        res.redirect('https://primer-app-angular.web.app/confirm-register');
 
-    // resp.json({"message":"Usuario registrado correctamente"});
+    } catch (error) {
+        console.log("ERROR EN EL TOKEN DE REGISTRO:",error)
+        res.redirect('https://primer-app-angular.web.app/confirm-register')
+    }
+
 }
 
 export const register = async (req, res) => {
