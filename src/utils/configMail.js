@@ -19,10 +19,10 @@ export const mensajePrueba = {
     html: '<h1>hola Mundo</h1>' //se puede enviar un texto plano o html
 }
 
-export function generateMessageMail(token) {
+export function generateMessageMail(token,email) {
     return {
         from: 'aostri.veterinaria@gmail.com',
-        to: 'alexis_aostri@hotmail.com',
+        to: email,
         subject: 'Correo de pruebas',
         html:
             `

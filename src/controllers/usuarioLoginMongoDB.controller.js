@@ -33,7 +33,7 @@ export const preregistro = async (req, res) => {
         //No importa si el mail esta cargado en los usuariosAConfirmar, siempre voy a ver si existe en la tabla oficial de usuarios.
 
         //Send mail//
-        const info = await transport.sendMail(generateMessageMail(token));
+        const info = await transport.sendMail(generateMessageMail(token,email));
 
 
         ///send mail///

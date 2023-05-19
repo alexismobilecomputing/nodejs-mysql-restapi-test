@@ -9,7 +9,7 @@ const router = Router();
 router.post('/login', login);
 
 router.post('/preregistro', preregistro);
-router.post('/registrousuario/:token', registrousuario);
+router.get('/registrousuario/:token', registrousuario);
 
 //Esta ruta la uso para probar que envia bien el token y q existe.
 //Primero pasa por el middleware q cree de requireToken, si esta todo ok va al siguiente middleware de infoUser
