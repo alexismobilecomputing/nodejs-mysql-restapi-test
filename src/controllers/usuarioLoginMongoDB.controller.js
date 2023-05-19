@@ -109,11 +109,11 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         let usuario = await Usuario.findOne({ email }) //Si encuentra el email, crea una variable usuario momentanea, con los valores del usuario de la base de datos
-        if (!usuario) return res.status(400).json({ errorMessage: "No existe el usuario registrado" });
+        if (!usuario) return res.status(400).json({ errorMessage: "El email ingresado no está registrado" });
 
         const respuestaPassword = await usuario.comparePassword(password); //El password que envio por parametro es el q acaba de ingresar desde el cliente
 
-        if (!respuestaPassword) return res.status(403).json({ errorMessage: "Contraseña incorrecta" }) //Muchos ponen credenciales o datos incorrectos, para no orientar en q se equivocaron
+        if (!respuestaPassword) return res.status(403).json({ errorMessage: "La password ingresada es incorrecta" }) //Muchos ponen credenciales o datos incorrectos, para no orientar en q se equivocaron
 
 
         //GENERO EL TOKEN JWT
