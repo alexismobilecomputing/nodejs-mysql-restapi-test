@@ -4,6 +4,58 @@ import { Usuario } from '../models/Usuario.js'
 import jwt from 'jsonwebtoken'
 import { generateToken } from "../utils/tokenManager.js";
 
+import { transport, generateMessageMail } from "../utils/configMail.js";
+
+import {UsuarioAConfirmar} from "../models/UsuarioAConfirmar.js"
+
+import nodemailer from 'nodemailer';
+
+export const preregistro = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        //1-Si el usuario existe le fuerzo el error y no lo dejo registrarse
+        let usuarioAConfirmar = await Usuario.findOne({ email })
+        if (usuarioAConfirmar) throw ({ code: 11000 })
+        /////////////////
+        
+        usuarioAConfirmar = new UsuarioAConfirmar({ email, password });
+        
+        //2 Voy a guardar en una tabla usuarioAEspera de confirmacion,
+        //Esta tabla va a tener el usuario y contraseña encriptada con su id, para q cuando verifique el mail ahora si se registre en la tabla de usuarios posta.
+        //IMPORTANTE//Ya una vez cargado el shema del usuario, antes de hacer el save, va a pasar por el pre y va a encriptar la contraseña
+        const result = await usuarioAConfirmar.save();
+        
+        //3- Genero un token q venza a los 5 min, con el id que me venga del resultado de agregar un usuarioAConfirmar
+        
+        console.log("RESULLTT: ",result.id)
+        const {token,expiresIn} = generateToken(result.id);
+
+        //4- Ahora que tengo el token(que solo tiene el id) le envio un email con el link del token para verificar la cuenta
+        //Si el token esta vencido, tiene q volver a intentar registrarse.
+        //No importa si el mail esta cargado en los usuariosAConfirmar, siempre voy a ver si existe en la tabla oficial de usuarios.
+
+        //Send mail//
+        const info = await transport.sendMail(generateMessageMail(token));
+
+        console.log("LA INFO DEL EMAIL MANDADO ES:",info)
+
+        ///send mail///
+
+        //5- Ahora tengo q armar otra ruta q reciba el token, tomar de ahi el id y si el token no esta vencido 
+        //Registrar el usuario con el usuario y password encriptados guardados en la tabla usuariosAConfirmar usando el id del token.
+
+        return res.json({ ok: true })
+
+    } catch (error) {
+        console.log("EEEERROR:",error)
+
+        if (error.code === 11000) {//Normalmente cuando ya existe el registro te da un error 11000
+            return res.status(400).json({ error: "Ya existe un usuario con ese email" })//Al email lo puse como Unique
+        }
+        return res.status(500).json({ error: "Error de servidor" })
+    }
+};
+
 export const register = async (req, res) => {
 
     const { email, password } = req.body;
@@ -58,6 +110,7 @@ export const login = async (req, res) => {
         return res.json({ token: token, expiresIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
 
     } catch (error) {
+        console.log("EL ERROR ES: ",error)
         return res.status(500).json({ error: "Error de servidor" })
     }
 };

@@ -22,7 +22,7 @@ usuarioSchema.pre("save", async function (next) {
 
     try {
         const salto = await bcryptjs.genSalt(10);
-        this.password = await bcryptjs.hash(this.password, salto); //Le pasa por parametro, la password que vino del cliente y que le asigne al schema en usuarioLoginController. Y esta password se encripta y es reemplazada por la anterior, guardando finalmente esta encriptada.
+        this.password = await bcryptjs.hash(this.password, salto); //Le pasa por parametro, la password que vino del cliente y que le asigne al schema en usuarioLoginMongoDBController. Y esta password se encripta y es reemplazada por la anterior, guardando finalmente esta encriptada.
         next();
     } catch (error) {
         throw new Error("Fallo el hash de cntraseña");

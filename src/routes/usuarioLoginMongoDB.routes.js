@@ -1,8 +1,10 @@
 import { Router } from 'express'
-import { register, login, infoUser } from '../controllers/usuarioLoginMongoDB.controller.js'
+import { register, login, infoUser, preregistro } from '../controllers/usuarioLoginMongoDB.controller.js'
 import { requireToken } from '../middlewares/requireToken.js';
 
 const router = Router();
+
+router.post('/preregistro', preregistro);
 
 router.post('/register', register);
 
