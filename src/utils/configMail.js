@@ -23,7 +23,7 @@ export function generateMessageMail(token,email) {
     return {
         from: 'aostri.veterinaria@gmail.com',
         to: email,
-        subject: 'Correo de pruebas',
+        subject: 'Veterinaria Aostri - Confirmación de registro',
         html:
             `
         <html>

@@ -65,7 +65,7 @@ export const registrousuario = async (req, res) => {
 
     usuarioARegistrar.save();
 
-    res.redirect('https://primer-app-angular.web.app/');
+    res.redirect('https://primer-app-angular.web.app/confirm-register');
 
     // resp.json({"message":"Usuario registrado correctamente"});
 }
