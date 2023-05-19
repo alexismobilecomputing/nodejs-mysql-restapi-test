@@ -5,8 +5,8 @@ export const transport = nodemailer.createTransport(
         host: 'smtp.gmail.com',
         port: 587,
         auth: {
-            user: 'aostri.veterinaria@gmail.com',
-            pass: 'whqfilblvnwthkxm'
+            user: process.env.EMAIL_NODEMAILER,
+            pass: process.env.PASSWD_NODEMAILER
         }
     }
 );
