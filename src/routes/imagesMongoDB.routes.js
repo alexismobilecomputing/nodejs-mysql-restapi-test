@@ -26,8 +26,8 @@ const storage = multer.diskStorage({ //en esta variable definimos, donde se van 
 
     filename: function (req, file, cb) {
         cb(null, uuidv4() + path.extname(file.originalname)) //A diferencia de lo q hacia arriba, le voy a concatenar un Id aleatorio al comienzo del nombre del archivo
-                                    //el path.extname(), lo q hace es extraerme la extension del nombre ej: index.html -> me devolveria .html
-    }      
+        //el path.extname(), lo q hace es extraerme la extension del nombre ej: index.html -> me devolveria .html
+    }
 
 });
 
@@ -44,7 +44,7 @@ router.get('/upload', async (req, res) => {
 });
 
 //Subo una imagen , Le agregue una validacion q pide token , con el middleware requireToken
-router.post('/upload',requireToken, upload.single('file'), async (req, res) => { //El nombre file es la palabra en donde espera el servidor q le envieemos la imagen desde el front
+router.post('/upload', requireToken, upload.single('file'), async (req, res) => { //El nombre file es la palabra en donde espera el servidor q le envieemos la imagen desde el front
     // console.log("FILE CON LA INFO:", req.file) //En el file viene la imagen
     // console.log("BODY CON LA INFO:", req.body) //En el body el resto de los campos
 
@@ -64,7 +64,7 @@ router.post('/upload',requireToken, upload.single('file'), async (req, res) => {
 })
 
 //Le agregue una validacion q pide token , con el middleware requireToken
-router.delete('/upload/:id',requireToken, async (req, res) => {
+router.delete('/upload/:id', requireToken, async (req, res) => {
     const idAnimal = req.params.id;
     try {
         // const result = await Image.deleteOne({ "_id": idAnimal });
@@ -89,7 +89,7 @@ router.delete('/upload/:id',requireToken, async (req, res) => {
 });
 
 //Le agregue una validacion q pide token , con el middleware requireToken
-router.put('/upload',requireToken, async (req, res) => {
+router.put('/upload', requireToken, async (req, res) => {
     const body = req.body;
     try {
         const result = await Image.findByIdAndUpdate(body._id, {

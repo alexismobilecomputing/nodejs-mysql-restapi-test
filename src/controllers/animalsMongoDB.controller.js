@@ -14,8 +14,8 @@ export const getAllAnimals = async (req, res) => {
 
 export const createAnimal = async (req, res) => {
     try {
-        const { name, typeAnimal, age , photo} = req.body; //El photo es el nombre del archivo .extension
-        const animal = new Animal({ name, typeAnimal, age  ,photo}); 
+        const { name, typeAnimal, age, photo } = req.body; //El photo es el nombre del archivo .extension
+        const animal = new Animal({ name, typeAnimal, age, photo });
         const animalSave = await animal.save();
         return res.json(animalSave);
     } catch (error) {
@@ -44,7 +44,7 @@ export const updateAnimal = async (req, res) => {
             "typeAnimal": body.typeAnimal
         })
 
-        return res.json({message:"Registro actualizado"});
+        return res.json({ message: "Registro actualizado" });
     } catch (error) {
         res.status(400).json({ "errorMessage": `No se pudo actualizar el animal` })
     }

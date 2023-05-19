@@ -46,7 +46,7 @@ export const preregistro = async (req, res) => {
     } catch (error) {
 
         if (error.code === 11000) {//Normalmente cuando ya existe el registro te da un error 11000
-            return res.status(400).json({ error: "Ya existe un usuario con ese email" })//Al email lo puse como Unique
+            return res.status(400).json({ errorMessage: "Ya existe un usuario con ese email" })//Al email lo puse como Unique
         }
         return res.status(500).json({ errorMessage: "Error de servidor" })
     }

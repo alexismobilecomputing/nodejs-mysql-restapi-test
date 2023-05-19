@@ -13,17 +13,17 @@ export const requireToken = (req, resp, next) => {
         //Este req.uid lo q hace es crearle un atributo uid, le asigno un valor y este puede ser usado por el siguiente middleware que le sige al de 'requireToken'
         next()//Si esta todo bien sigue al siguiente middleware
 
-    } catch(error) {
+    } catch (error) {
         const TokenVerificationErrors = {
             "invalid signature": "La firma del JWT no es válida",
             "jwt expired": "JWT expirado",
             "invalid token": "Token no válido",
             "No Bearer": "Utiliza formato Bearer", //Este lo genere yo en la linea 7, el resto son errores de jwt
-            "jwt malformed" : "JWT mal formado"
+            "jwt malformed": "JWT mal formado"
         }
         return resp
             .status(401) //Error 401 es cuando no estamos autorizados
-            .send({errorMessage: TokenVerificationErrors[error.message]})
+            .send({ errorMessage: TokenVerificationErrors[error.message] })
     }
 
 }

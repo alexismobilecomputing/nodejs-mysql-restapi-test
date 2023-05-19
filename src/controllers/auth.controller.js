@@ -8,7 +8,7 @@ export const register = async (req, res) => {
     ////////////////////////// Esto podria estar en el mismo middleware q usa el login
     const errors = validationResult(req); //Si no es un email, va a viajar ese mensaje de error y va a venir en el req.
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ errorMessage: errors.array() });
     }
     //////////////////////////
 
@@ -62,15 +62,15 @@ export const login = async (req, res) => {
         //GENERO EL TOKEN JWT
 
         // const token = jwt.sign({uid: user.id}, process.env.JWT_SECRET) //Este es el payload, yo puedo mandar lo q quiera y llamar como quiera, le puse uid(userId) y le mando el id, porque despues en un futuro podria hacer una consulta sobre el usuario con solo saber su id
-                                                                          //El JWT_SECRET es una clave secreta q INVENTAMOS nosotros q sirve para generar el token, y la tengo guardada en las variables de entorno
+        //El JWT_SECRET es una clave secreta q INVENTAMOS nosotros q sirve para generar el token, y la tengo guardada en las variables de entorno
 
-        const {token,expireIn} = generateToken(user.id)
+        const { token, expireIn } = generateToken(user.id)
 
         //Guardo el token en una cookie llamada token, q va a estar en el navegador
-        res.cookie("token",token,{ //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
+        res.cookie("token", token, { //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
             httpOnly: true,//La cookie solo va a vivir en el intercambio http en el intercambio, NO VA A PODER SER ACCEDIDO CON JAVASCRIPT DESDE EL FRONTEND
             secure: !(procees.env.MODO === "developer") //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
-        }) 
+        })
 
         return res.json({ token: token, expireIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
     } catch (error) {
@@ -81,14 +81,14 @@ export const login = async (req, res) => {
 
 //Ruta para probar verificar token de usuarios registrados.
 //Este token hay q enviarlo en el Auth y luego con el formato Bearer. (Envio el mismo token q me dan cuando ingreso)
-export const infoUser = async (req,res) =>{
-        
+export const infoUser = async (req, res) => {
+
     //Si llegue aca, es porque la persona valido bien el token y puede acceder a las acciones de esta ruta, en este caso solo devolvemos info del usuario.
     try {
-        console.log("req",req.uid)
+        console.log("req", req.uid)
         const user = await User.findById(req.uid); //Este req.uid es la propiedad q le setie al requerimiento en el middleware de requireToken, el id lo saque de la variable payload.
-        return res.json({email:user.email, id: user.id}); //No quiero que le envie el password al cliente
+        return res.json({ email: user.email, id: user.id }); //No quiero que le envie el password al cliente
     } catch (error) {
-       return res.status(500).json({error: "Error en el servidor"}) 
+        return res.status(500).json({ errorMessage: "Error en el servidor" })
     }
 }
