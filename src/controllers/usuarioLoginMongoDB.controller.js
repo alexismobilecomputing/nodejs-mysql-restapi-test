@@ -48,7 +48,7 @@ export const preregistro = async (req, res) => {
         if (error.code === 11000) {//Normalmente cuando ya existe el registro te da un error 11000
             return res.status(400).json({ error: "Ya existe un usuario con ese email" })//Al email lo puse como Unique
         }
-        return res.status(500).json({ error: "Error de servidor" })
+        return res.status(500).json({ errorMessage: "Error de servidor" })
     }
 };
 
@@ -99,9 +99,9 @@ export const register = async (req, res) => {
 
     } catch (error) {
         if (error.code === 11000) {//Normalmente cuando ya existe el registro te da un error 11000
-            return res.status(400).json({ error: "Ya existe un usuario con ese email" })//Al email lo puse como Unique
+            return res.status(400).json({ errorMessage: "Ya existe un usuario con ese email" })//Al email lo puse como Unique
         }
-        return res.status(500).json({ error: "Error de servidor" })
+        return res.status(500).json({ errorMessage: "Error de servidor" })
     }
 };
 
@@ -109,11 +109,11 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         let usuario = await Usuario.findOne({ email }) //Si encuentra el email, crea una variable usuario momentanea, con los valores del usuario de la base de datos
-        if (!usuario) return res.status(400).json({ error: "No existe el usuario registrado" });
+        if (!usuario) return res.status(400).json({ errorMessage: "No existe el usuario registrado" });
 
         const respuestaPassword = await usuario.comparePassword(password); //El password que envio por parametro es el q acaba de ingresar desde el cliente
 
-        if (!respuestaPassword) return res.status(403).json({ error: "Contraseña incorrecta" }) //Muchos ponen credenciales o datos incorrectos, para no orientar en q se equivocaron
+        if (!respuestaPassword) return res.status(403).json({ errorMessage: "Contraseña incorrecta" }) //Muchos ponen credenciales o datos incorrectos, para no orientar en q se equivocaron
 
 
         //GENERO EL TOKEN JWT
@@ -128,8 +128,7 @@ export const login = async (req, res) => {
         return res.json({ token: token, expiresIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
 
     } catch (error) {
-        console.log("EL ERROR ES: ", error)
-        return res.status(500).json({ error: "Error de servidor" })
+        return res.status(500).json({ errorMessage: "Error de servidor" })
     }
 };
 
@@ -142,6 +141,6 @@ export const infoUser = async (req, res) => {
         const usuario = await Usuario.findById(req.uid); //Este req.uid es la propiedad q le setie al requerimiento en el middleware de requireToken, el id lo saque de la variable payload.
         return res.json({ email: usuario.email }); //No quiero que le envie el password al cliente
     } catch (error) {
-        return res.status(500).json({ error: "Error en el servidor" })
+        return res.status(500).json({ errorMessage: "Error en el servidor" })
     }
 }

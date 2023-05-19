@@ -23,9 +23,7 @@ export const requireToken = (req, resp, next) => {
         }
         return resp
             .status(401) //Error 401 es cuando no estamos autorizados
-            .send({error: TokenVerificationErrors[error.message]})
-
+            .send({errorMessage: TokenVerificationErrors[error.message]})
     }
-
 
 }

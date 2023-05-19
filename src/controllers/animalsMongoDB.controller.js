@@ -8,7 +8,7 @@ export const getAllAnimals = async (req, res) => {
 
         return res.json(animals); //Me devuelve todos los animales
     } catch (error) {
-        return res.status(500).json({ error: "Error en el servidor" })
+        return res.status(500).json({ errorMessage: "Error en el servidor" })
     }
 }
 

@@ -34,9 +34,9 @@ export const register = async (req, res) => {
 
     } catch (error) {
         if (error.code === 11000) {//Normalmente cuando ya existe el registro te da un error 11000
-            return res.status(400).json({ error: "Ya existe el usuario" })
+            return res.status(400).json({ errorMessage: "Ya existe el usuario" })
         }
-        return res.status(500).json({ error: "Error de servidor" })
+        return res.status(500).json({ errorMessage: "Error de servidor" })
     }
 };
 
@@ -52,11 +52,11 @@ export const login = async (req, res) => {
         const { email, password } = req.body;
         let user = await User.findOne({ email })
 
-        if (!user) return res.status(400).json({ error: "No existe el usuario registrado" });
+        if (!user) return res.status(400).json({ errorMessage: "No existe el usuario registrado" });
 
         const respuestaPassword = await user.comparePassword(password); //Esto devuelve true o false
 
-        if (!respuestaPassword) return res.status(403).json({ error: "Contraseña incorrecta" }) //Muchos ponen credenciales o datos incorrectos, para no orientar en q se equivocaron
+        if (!respuestaPassword) return res.status(403).json({ errorMessage: "Contraseña incorrecta" }) //Muchos ponen credenciales o datos incorrectos, para no orientar en q se equivocaron
 
 
         //GENERO EL TOKEN JWT
@@ -74,7 +74,7 @@ export const login = async (req, res) => {
 
         return res.json({ token: token, expireIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
     } catch (error) {
-        return res.status(500).json({ error: "Error de servidor" })
+        return res.status(500).json({ errorMessage: "Error de servidor" })
     }
 };
 
