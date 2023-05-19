@@ -1,12 +1,12 @@
 import { validationResult } from "express-validator";
-import { Usuario } from '../models/Usuario.js' 
+import { Usuario } from '../models/Usuario.js'
 
 import jwt from 'jsonwebtoken'
 import { generateToken } from "../utils/tokenManager.js";
 
 import { transport, generateMessageMail } from "../utils/configMail.js";
 
-import {UsuarioAConfirmar} from "../models/UsuarioAConfirmar.js"
+import { UsuarioAConfirmar } from "../models/UsuarioAConfirmar.js"
 
 import nodemailer from 'nodemailer';
 
@@ -17,18 +17,16 @@ export const preregistro = async (req, res) => {
         let usuarioAConfirmar = await Usuario.findOne({ email })
         if (usuarioAConfirmar) throw ({ code: 11000 })
         /////////////////
-        
+
         usuarioAConfirmar = new UsuarioAConfirmar({ email, password });
-        
+
         //2 Voy a guardar en una tabla usuarioAEspera de confirmacion,
         //Esta tabla va a tener el usuario y contraseña encriptada con su id, para q cuando verifique el mail ahora si se registre en la tabla de usuarios posta.
         //IMPORTANTE//Ya una vez cargado el shema del usuario, antes de hacer el save, va a pasar por el pre y va a encriptar la contraseña
         const result = await usuarioAConfirmar.save();
-        
         //3- Genero un token q venza a los 5 min, con el id que me venga del resultado de agregar un usuarioAConfirmar
-        
-        console.log("RESULLTT: ",result.id)
-        const {token,expiresIn} = generateToken(result.id);
+
+        const { token, expiresIn } = generateToken(result.id);
 
         //4- Ahora que tengo el token(que solo tiene el id) le envio un email con el link del token para verificar la cuenta
         //Si el token esta vencido, tiene q volver a intentar registrarse.
@@ -37,7 +35,6 @@ export const preregistro = async (req, res) => {
         //Send mail//
         const info = await transport.sendMail(generateMessageMail(token));
 
-        console.log("LA INFO DEL EMAIL MANDADO ES:",info)
 
         ///send mail///
 
@@ -47,7 +44,6 @@ export const preregistro = async (req, res) => {
         return res.json({ ok: true })
 
     } catch (error) {
-        console.log("EEEERROR:",error)
 
         if (error.code === 11000) {//Normalmente cuando ya existe el registro te da un error 11000
             return res.status(400).json({ error: "Ya existe un usuario con ese email" })//Al email lo puse como Unique
@@ -55,6 +51,24 @@ export const preregistro = async (req, res) => {
         return res.status(500).json({ error: "Error de servidor" })
     }
 };
+
+export const registrousuario = async (req, res) => {
+    const tokenAConfirmar = req.params.token;
+
+    //1-Con el token que me vino de la url de confirmacion, lo abro y busco el registro de la tabla de usuarios a confirmar.
+    const payload = jwt.verify(tokenAConfirmar, process.env.JWT_SECRET)
+
+    //2-Con el id busco en la tabla y agarro sus valores para registrar un usuario ahora si en la tabla final de 'Usuario'
+    const usuarioAConfirmar = await UsuarioAConfirmar.findById(payload.uid)
+
+    const usuarioARegistrar = new Usuario({ email: usuarioAConfirmar.email, password: usuarioAConfirmar.password })
+
+    usuarioARegistrar.save();
+
+    res.redirect('https://primer-app-angular.web.app/');
+
+    // resp.json({"message":"Usuario registrado correctamente"});
+}
 
 export const register = async (req, res) => {
 
@@ -90,7 +104,6 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         let usuario = await Usuario.findOne({ email }) //Si encuentra el email, crea una variable usuario momentanea, con los valores del usuario de la base de datos
-
         if (!usuario) return res.status(400).json({ error: "No existe el usuario registrado" });
 
         const respuestaPassword = await usuario.comparePassword(password); //El password que envio por parametro es el q acaba de ingresar desde el cliente
@@ -99,7 +112,7 @@ export const login = async (req, res) => {
 
 
         //GENERO EL TOKEN JWT
-        const {token,expiresIn} = generateToken(usuario.id);
+        const { token, expiresIn } = generateToken(usuario.id);
 
         //Guardo el token en una cookie llamada token, q va a estar en el navegador
         // res.cookie("token",token,{ //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
@@ -110,7 +123,7 @@ export const login = async (req, res) => {
         return res.json({ token: token, expiresIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
 
     } catch (error) {
-        console.log("EL ERROR ES: ",error)
+        console.log("EL ERROR ES: ", error)
         return res.status(500).json({ error: "Error de servidor" })
     }
 };
@@ -118,12 +131,12 @@ export const login = async (req, res) => {
 
 //Ruta para probar verificar token de usuarios registrados.
 //Este token hay q enviarlo en el Auth y luego con el formato Bearer. (Envio el mismo token q me dan cuando ingreso)
-export const infoUser = async (req,res) =>{
+export const infoUser = async (req, res) => {
     //Si llegue aca, es porque la persona valido bien el token y puede acceder a las acciones de esta ruta, en este caso solo devolvemos info del usuario.
     try {
         const usuario = await Usuario.findById(req.uid); //Este req.uid es la propiedad q le setie al requerimiento en el middleware de requireToken, el id lo saque de la variable payload.
-        return res.json({email:usuario.email}); //No quiero que le envie el password al cliente
+        return res.json({ email: usuario.email }); //No quiero que le envie el password al cliente
     } catch (error) {
-       return res.status(500).json({error: "Error en el servidor"}) 
+        return res.status(500).json({ error: "Error en el servidor" })
     }
 }

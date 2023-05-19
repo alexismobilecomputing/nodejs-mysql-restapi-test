@@ -27,7 +27,6 @@ export function generateMessageMail(token) {
         html:
             `
         <html>
-
         <head>
             <title>Confirmación de registro</title>
             <style>
@@ -58,70 +57,21 @@ export function generateMessageMail(token) {
                 }
             </style>
         </head>
-
         <body>
             <img src="https://nodejs-mysql-restapi-test-production-af43.up.railway.app/public/logo-veterinaria.png" alt="Veterinaria Aostri" class="" />
-            <h1>Bienvenido a Aostri</h1>
+            <h1>Bienvenido/a a Aostri</h1>
 
             <p>Estamos encantados de que quieras ser parte de nuestra veterinaria. Para completar tu registro, por favor haz
                 clic en el siguiente
                 enlace:</p>
-            <p><a href="https://www.ejemplo.com/confirmacion?${token}" class="link">Confirmar registro</a></p>
+            <p><a href="https://nodejs-mysql-restapi-test-production-af43.up.railway.app/auth/preregistro/${token}" class="link">Confirmar registro</a></p>
 
             <p>¡Esperamos verte pronto en nuestras instalaciones!</p>
             <p>Saludos,<br>El equipo de Aostri</p>
         </body>
-
         </html>
                `
-
-
-
-
-        // `
-        // <h1>Porfavor confirma este link, para completar el registro</h1>
-        // "<a href="https://www.ejemplo.com/${token}">ENLACE</a>": 
-        // ` 
-        //     `
-        // <html>
-        //     <head>
-        //     <title>Confirmación de registro</title>
-        //     <style>
-        //         body {
-        //         background-color: #f1f1f1;
-        //         font-family: Arial, sans-serif;
-        //         text-align: center;
-        //         padding: 20px;
-        //         }
-
-        //         h1 {
-        //         color: #333;
-        //         }
-
-        //         p {
-        //         color: #555;
-        //         margin-bottom: 20px;
-        //         }
-
-        //         .link {
-        //         color: #007bff;
-        //         text-decoration: none;
-        //         }
-
-        //         .link:hover {
-        //         text-decoration: underline;
-        //         }
-        //     </style>
-        //     </head>
-        //     <body>
-        //     <h1>Bienvenido a nuestro sitio</h1>
-        //     <p>Estamos encantados de que quieras registrarte. Para completar tu registro, por favor haz clic en el siguiente enlace:</p>
-        //     <p><a href="https://www.ejemplo.com/confirmacion?${token}" class="link">Confirmar registro</a></p>
-        //     </body>
-        // </html>
-        //     `
     }
-
 }
 
 
