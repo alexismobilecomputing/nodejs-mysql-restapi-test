@@ -35,12 +35,16 @@ const upload = multer({ storage: storage });
 
 //Trae todas las imagenes, pero solo le devuelvo el nombre, edad, tipoAnimal y la extension de la foto
 router.get('/upload', async (req, res) => {
-    //Se puede escribir todos los parametros q NO quiero q traiga
-    // const images = await Image.find({}, { __v: 0, mimetype:0  }); 
+    try {
+        //Se puede escribir todos los parametros q NO quiero q traiga
+        // const images = await Image.find({}, { __v: 0, mimetype:0  }); 
 
-    // O puedo decirle los parametros que SI quiero q traiga q son los 4 campos q necesito en el frontend
-    const animales = await Image.find().select('nameanimal ageanimal typeanimal filename');
-    res.json(animales);
+        // O puedo decirle los parametros que SI quiero q traiga q son los 4 campos q necesito en el frontend
+        const animales = await Image.find().select('nameanimal ageanimal typeanimal filename');
+        res.json(animales);
+    } catch (error) {
+        res.status(400).json({ errorMessage: `Error al traer los animales` })
+    }
 });
 
 //Subo una imagen , Le agregue una validacion q pide token , con el middleware requireToken
@@ -48,19 +52,23 @@ router.post('/upload', requireToken, upload.single('file'), async (req, res) => 
     // console.log("FILE CON LA INFO:", req.file) //En el file viene la imagen
     // console.log("BODY CON LA INFO:", req.body) //En el body el resto de los campos
 
-    //Cada vez que cargue una imagen le voy a crear un id propio y le voy a cambiar el nombre
-    const image = new Image()
-    image.nameanimal = req.body.name;
-    image.ageanimal = req.body.age;
-    image.typeanimal = req.body.typeAnimal;
-    image.filename = req.file.filename; //Aca tengo guardado en vez de perroo.jpg -> elIdgenerado.jpg, q es el nombre de como esta guardado el archivo ahora.
-    image.path = 'src/public/uploads/' + req.file.filename;
-    image.originalname = req.file.originalname; //EJ: perroo.jpg
-    image.mimetype = req.file.mimetype;
-    image.size = req.file.size;
-    await image.save();//Guardo la imagen en la base de datos
+    try {
+        //Cada vez que cargue una imagen le voy a crear un id propio y le voy a cambiar el nombre
+        const image = new Image()
+        image.nameanimal = req.body.name;
+        image.ageanimal = req.body.age;
+        image.typeanimal = req.body.typeAnimal;
+        image.filename = req.file.filename; //Aca tengo guardado en vez de perroo.jpg -> elIdgenerado.jpg, q es el nombre de como esta guardado el archivo ahora.
+        image.path = 'src/public/uploads/' + req.file.filename;
+        image.originalname = req.file.originalname; //EJ: perroo.jpg
+        image.mimetype = req.file.mimetype;
+        image.size = req.file.size;
+        await image.save();//Guardo la imagen en la base de datos
 
-    res.json({ "mmesage": 'Archivo cargado con exito' })
+        res.json({ message: 'Archivo cargado con exito' })
+    } catch (error) {
+        res.status(400).json({ errorMessage: `No se pudo subir la imagen` })
+    }
 })
 
 //Le agregue una validacion q pide token , con el middleware requireToken
@@ -84,7 +92,7 @@ router.delete('/upload/:id', requireToken, async (req, res) => {
         return res.json(imageDeleted);
 
     } catch (error) {
-        res.status(400).json({ "errorMessage": `No se pudo eliminar el animal` })
+        res.status(400).json({ errorMessage: `No se pudo eliminar el animal` })
     }
 });
 
@@ -99,7 +107,7 @@ router.put('/upload', requireToken, async (req, res) => {
         })
         return res.json({ message: "Registro actualizado" });
     } catch (error) {
-        res.status(400).json({ "errorMessage": `No se pudo actualizar el animal` })
+        res.status(400).json({ errorMessage: `No se pudo actualizar el animal` })
     }
 });
 

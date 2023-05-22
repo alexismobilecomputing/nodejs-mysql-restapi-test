@@ -20,7 +20,7 @@ export const createAnimal = async (req, res) => {
         return res.json(animalSave);
     } catch (error) {
         if (error.code === 11000) {
-            res.status(400).json({ "errorMessage": `El nombre ${error.keyValue.name} ya existe` })
+            res.status(400).json({ errorMessage: `El nombre ${error.keyValue.name} ya existe` })
         }
     }
 }
@@ -31,7 +31,7 @@ export const deleteAnimal = async (req, res) => {
         const result = await Animal.deleteOne({ "_id": idAnimal });
         return res.json(result);
     } catch (error) {
-        res.status(400).json({ "errorMessage": `No se pudo eliminar el animal` })
+        res.status(400).json({ errorMessage: `No se pudo eliminar el animal` })
     }
 }
 
@@ -46,6 +46,6 @@ export const updateAnimal = async (req, res) => {
 
         return res.json({ message: "Registro actualizado" });
     } catch (error) {
-        res.status(400).json({ "errorMessage": `No se pudo actualizar el animal` })
+        res.status(400).json({ errorMessage: `No se pudo actualizar el animal` })
     }
 }
