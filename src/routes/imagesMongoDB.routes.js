@@ -34,7 +34,7 @@ const storage = multer.diskStorage({ //en esta variable definimos, donde se van 
 const upload = multer({ storage: storage });
 
 //Trae todas las imagenes, pero solo le devuelvo el nombre, edad, tipoAnimal y la extension de la foto
-router.get('/upload', async (req, res) => {
+router.get('/upload', requireToken, async (req, res) => {
     try {
         //Se puede escribir todos los parametros q NO quiero q traiga
         // const images = await Image.find({}, { __v: 0, mimetype:0  }); 
