@@ -125,7 +125,7 @@ export const login = async (req, res) => {
         //     secure: !(process.env.MODO === "developer") //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
         // }) 
 
-        generateRefreshToken(usuario.id,res)
+        // generateRefreshToken(usuario.id,res)
 
         return res.json({ token: token, expiresIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
 
