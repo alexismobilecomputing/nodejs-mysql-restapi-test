@@ -17,7 +17,8 @@ export const generateToken = (uid) => {
 
 export const generateRefreshToken = (uid, res) => {
     console.log("entre al generateRefreshToken id: ", uid)
-    console.log("entre al generateRefreshToken RESSS: ", res)
+    console.log("entre al generateRefreshToken RESSS1: ", res.cookie)
+    console.log("entre al generateRefreshToken RESSS2: ", res.cookie())
 
     //Como es un token de refresh puede durar mas.
     //EJ: 60 * 60 * 24 * 30  => Para que dure 30 dias
@@ -30,7 +31,7 @@ export const generateRefreshToken = (uid, res) => {
 
         res.cookie("refreshToken", refreshToken, { //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
             httpOnly: true,//La cookie solo va a vivir en el intercambio http en el intercambio, NO VA A PODER SER ACCEDIDO CON JAVASCRIPT DESDE EL FRONTEND
-            secure: !(procees.env.MODO === "developer"), //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
+            secure: !(process.env.MODO === "developer"), //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
             expires: new Date(Date.now + expiresIn * 1000)// Es * 1000, ya que esta en milisegundos.
         })
 

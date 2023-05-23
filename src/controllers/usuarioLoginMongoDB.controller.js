@@ -123,7 +123,7 @@ export const login = async (req, res) => {
         //Guardo el token en una cookie llamada token, q va a estar en el navegador
         // res.cookie("token",token,{ //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
         //     httpOnly: true,//La cookie solo va a vivir en el intercambio http en el intercambio, NO VA A PODER SER ACCEDIDO CON JAVASCRIPT DESDE EL FRONTEND
-        //     secure: !(procees.env.MODO === "developer") //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
+        //     secure: !(process.env.MODO === "developer") //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
         // }) 
 
         generateRefreshToken(usuario.id,res)
