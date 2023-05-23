@@ -117,7 +117,7 @@ export const login = async (req, res) => {
 
 
         //GENERO EL TOKEN JWT
-        const { token, expiresIn } = generateToken(usuario.id);
+        const { token, expiresIn } = generateToken(usuario.id,res);
 
         //Guardo el token en una cookie llamada token, q va a estar en el navegador
         // res.cookie("token",token,{ //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
