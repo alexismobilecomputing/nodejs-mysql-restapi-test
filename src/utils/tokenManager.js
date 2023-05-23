@@ -23,7 +23,7 @@ export const generateRefreshToken = (uid, res) => {
     const expiresIn = 60 * 60 * 24 * 30
     try {
         const refreshToken = jwt.sign({ uid: uid }, process.env.JWT_REFRESH, { expiresIn: expiresIn });
-        console.log("refreshToken: ", refreshToken)
+        console.log("refreshTokeEEn: ", refreshToken)
         //Tengo q guardar el refresh token, puede ser en una coockie o donde quiera, este no importa si lo roban porque no es el que valida las peticiones
         //Este token es solo para regenerar otro token.
 
