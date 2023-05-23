@@ -17,8 +17,6 @@ export const generateToken = (uid) => {
 
 export const generateRefreshToken = (uid, res) => {
     console.log("entre al generateRefreshToken id: ", uid)
-    // console.log("entre al generateRefreshToken RESSS1: ", res.cookie)
-    // console.log("entre al generateRefreshToken RESSS2: ", res.cookie())
 
     //Como es un token de refresh puede durar mas.
     //EJ: 60 * 60 * 24 * 30  => Para que dure 30 dias
