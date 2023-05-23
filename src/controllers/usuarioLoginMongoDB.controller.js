@@ -107,7 +107,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        // const { email, password } = req.body;
         let usuario = await Usuario.findOne({ email }) //Si encuentra el email, crea una variable usuario momentanea, con los valores del usuario de la base de datos
         if (!usuario) return res.status(400).json({ errorMessage: "El email ingresado no está registrado" });
 
