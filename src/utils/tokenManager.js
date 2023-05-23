@@ -20,7 +20,7 @@ export const generateRefreshToken = (uid, res) => {
 
     //Como es un token de refresh puede durar mas.
     //EJ: 60 * 60 * 24 * 30  => Para que dure 30 dias
-    const expiresIn = 60 * 10
+    const expiresIn = 60 * 60 * 24 * 30
     try {
         const refreshToken = jwt.sign({ uid: uid }, process.env.JWT_REFRESH, { expiresIn: expiresIn });
         console.log("refreshToken: ", refreshToken)
