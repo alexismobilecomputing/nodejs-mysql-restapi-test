@@ -22,11 +22,11 @@ export const generateRefreshToken = (uid) => {
     const expiresIn = 60 * 10 
     try {
         const refreshToken = jwt.sign({ uid: uid }, process.env.JWT_REFRESH, { expiresIn: expiresIn });
-
+        console.log("refreshToken: ",refreshToken)
         //Tengo q guardar el refresh token, puede ser en una coockie o donde quiera, este no importa si lo roban porque no es el que valida las peticiones
         //Este token es solo para regenerar otro token.
 
-        res.cookie("token",token,{ //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
+        res.cookie("token",refreshToken,{ //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
             httpOnly: true,//La cookie solo va a vivir en el intercambio http en el intercambio, NO VA A PODER SER ACCEDIDO CON JAVASCRIPT DESDE EL FRONTEND
             secure: !(procees.env.MODO === "developer"), //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
             expires: new Date(Date.now + expiresIn * 1000)// Es * 1000, ya que esta en milisegundos.
