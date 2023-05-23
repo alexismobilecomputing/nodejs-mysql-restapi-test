@@ -27,10 +27,15 @@ export const generateRefreshToken = (uid, res) => {
         //Tengo q guardar el refresh token, puede ser en una coockie o donde quiera, este no importa si lo roban porque no es el que valida las peticiones
         //Este token es solo para regenerar otro token.
 
+        // Calcula la fecha de expiración
+        const expirationDate = new Date();
+        expirationDate.setSeconds(expirationDate.getSeconds() + expiresIn);
+
+
         res.cookie("refreshToken", refreshToken, { //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
             httpOnly: true,//La cookie solo va a vivir en el intercambio http en el intercambio, NO VA A PODER SER ACCEDIDO CON JAVASCRIPT DESDE EL FRONTEND
             secure: !(process.env.MODO === "developer"), //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
-            expires: new Date(Date.now + expiresIn * 1000)// Es * 1000, ya que esta en milisegundos.
+            expires: expirationDate// Es * 1000, ya que esta en milisegundos.
         })
 
         // return refreshToken; //En este caso no necesitamos la expiracion, solo el token.

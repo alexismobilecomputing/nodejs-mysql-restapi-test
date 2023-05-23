@@ -127,6 +127,7 @@ export const login = async (req, res) => {
 
         generateRefreshToken(usuario.id,res)
 
+
         return res.json({ token: token, expiresIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
 
     } catch (error) {
