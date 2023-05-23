@@ -117,7 +117,7 @@ export const login = async (req, res) => {
 
 
         //GENERO EL TOKEN JWT
-        const { token, expiresIn } = generateToken(usuario.id,res);
+        const { token, expiresIn } = generateToken(usuario.id);
 
         //Guardo el token en una cookie llamada token, q va a estar en el navegador
         // res.cookie("token",token,{ //Las cookies al igual que el localstorage, pueden ser accedidos por cualqueir persona desde el navegador
@@ -125,7 +125,7 @@ export const login = async (req, res) => {
         //     secure: !(procees.env.MODO === "developer") //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
         // }) 
 
-        generateRefreshToken(usuario.id);
+        generateRefreshToken(usuario.id,res)
 
         return res.json({ token: token, expiresIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
 
