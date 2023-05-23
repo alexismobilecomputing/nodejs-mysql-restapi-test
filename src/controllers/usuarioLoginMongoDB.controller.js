@@ -107,7 +107,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        // const { email, password } = req.body;
+        const { email, password } = req.body;
         let usuario = await Usuario.findOne({ email }) //Si encuentra el email, crea una variable usuario momentanea, con los valores del usuario de la base de datos
         if (!usuario) return res.status(400).json({ errorMessage: "El email ingresado no está registrado" });
 
@@ -125,7 +125,7 @@ export const login = async (req, res) => {
         //     secure: !(process.env.MODO === "developer") //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
         // }) 
 
-        // generateRefreshToken(usuario.id,res)
+        generateRefreshToken(usuario.id,res)
 
         return res.json({ token: token, expiresIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
 
