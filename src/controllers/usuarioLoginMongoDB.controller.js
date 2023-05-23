@@ -2,7 +2,7 @@ import { validationResult } from "express-validator";
 import { Usuario } from '../models/Usuario.js'
 
 import jwt from 'jsonwebtoken'
-import { generateToken } from "../utils/tokenManager.js";
+import { generateRefreshToken, generateToken } from "../utils/tokenManager.js";
 
 import { transport, generateMessageMail } from "../utils/configMail.js";
 
@@ -124,6 +124,8 @@ export const login = async (req, res) => {
         //     httpOnly: true,//La cookie solo va a vivir en el intercambio http en el intercambio, NO VA A PODER SER ACCEDIDO CON JAVASCRIPT DESDE EL FRONTEND
         //     secure: !(procees.env.MODO === "developer") //Esto es para que viva en https, pero nosotros cuando trabajamos local usamos http, entonces le prgeuntamos a la variable de entorno modo q creamos para q si estamos en local ponga en false sino en true, en produccion siempre tiene q estar en true
         // }) 
+
+        generateRefreshToken(usuario.id);
 
         return res.json({ token: token, expiresIn }) //Se puede escribir de las 2 maneras si los nombres coinciden
 
